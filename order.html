@@ -90,17 +90,16 @@ function submitOrder(){
   };
 
   // 🔹 Google Sheet Save
-  fetch("https://script.google.com/macros/s/AKfycbyhebgy7dRsEHwHB72ei-HydUR1hzRgAcWhbXcfABFmYTDwsY_B4t4OPaTHGy8LTmSlrw/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbyAIaPg9B0lJqkg6JmlFDVyzeoVnpTv9FKhz6qI5oSfm_eAVWiXQsWNLcfn_myevTck2w/exec", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify(data)
 })
-.then(res => res.text())
-.then(txt => alert("Response: " + txt))  // <-- এখানে
+.then(res => res.json())
+.then(resp => alert("Response: " + resp.result))
 .catch(err => alert("Error: " + err));
-
   // 🔹 WhatsApp Message
   var msg = "🛒 নতুন অর্ডার:%0A" +
           "নাম: " + data.name + "%0A" +
