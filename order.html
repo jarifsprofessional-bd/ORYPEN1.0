@@ -92,8 +92,14 @@ function submitOrder(){
   // 🔹 Google Sheet Save
   fetch("https://script.google.com/macros/s/AKfycbyhebgy7dRsEHwHB72ei-HydUR1hzRgAcWhbXcfABFmYTDwsY_B4t4OPaTHGy8LTmSlrw/exec", {
   method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
   body: JSON.stringify(data)
-});
+})
+.then(res => res.text())
+.then(txt => alert("Response: " + txt))  // <-- এখানে
+.catch(err => alert("Error: " + err));
 
   // 🔹 WhatsApp Message
   var msg = "🛒 নতুন অর্ডার:%0A" +
