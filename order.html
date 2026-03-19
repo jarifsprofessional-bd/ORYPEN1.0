@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
@@ -15,50 +15,46 @@
 <section>
   <h2>আপনার তথ্য দিন</h2>
 
-  <form onsubmit="submitOrder(); return false;">
+  <!-- 🔥 FORM DIRECT SUBMIT -->
+  <form method="POST" action="https://script.google.com/macros/s/AKfycbyAIaPg9B0lJqkg6JmlFDVyzeoVnpTv9FKhz6qI5oSfm_eAVWiXQsWNLcfn_myevTck2w/exec">
     
-    <input type="text" id="name" placeholder="নাম" required><br><br>
-    <input type="tel" id="phone" placeholder="ফোন নাম্বার" required><br><br>
+    <input type="text" name="name" placeholder="নাম" required><br><br>
+    <input type="tel" name="phone" placeholder="ফোন নাম্বার" required><br><br>
 
-    <!-- Division -->
-    <select id="division" required>
+    <select name="division" required>
       <option value="">বিভাগ নির্বাচন করুন</option>
-      <option value="ঢাকা">ঢাকা</option>
-      <option value="চট্টগ্রাম">চট্টগ্রাম</option>
-      <option value="খুলনা">খুলনা</option>
-      <option value="রাজশাহী">রাজশাহী</option>
-      <option value="বরিশাল">বরিশাল</option>
-      <option value="সিলেট">সিলেট</option>
-      <option value="রংপুর">রংপুর</option>
-      <option value="ময়মনসিংহ">ময়মনসিংহ</option>
+      <option>ঢাকা</option>
+      <option>চট্টগ্রাম</option>
+      <option>খুলনা</option>
+      <option>রাজশাহী</option>
+      <option>বরিশাল</option>
+      <option>সিলেট</option>
+      <option>রংপুর</option>
+      <option>ময়মনসিংহ</option>
     </select><br><br>
 
-    <input type="text" id="district" placeholder="জেলা" required><br><br>
-    <input type="text" id="upazila" placeholder="উপজেলা" required><br><br>
-    <input type="text" id="address" placeholder="বিস্তারিত ঠিকানা (গ্রাম/রাস্তা/বাড়ি)" required><br><br>
+    <input type="text" name="district" placeholder="জেলা" required><br><br>
+    <input type="text" name="upazila" placeholder="উপজেলা" required><br><br>
+    <input type="text" name="address" placeholder="বিস্তারিত ঠিকানা" required><br><br>
 
-    <!-- Product -->
-    <select id="product">
-      <option value="১২টি কলম (১৭৯ টাকা)">১২টি কলম (১৭৯ টাকা)</option>
-      <option value="২০টি কলম (২৯৯ টাকা)">২০টি কলম (২৯৯ টাকা)</option>
-      <option value="৪০টি কলম (৫৯৯ টাকা)">৪০টি কলম (৫৯৯ টাকা)</option>
-       <option value="১০০টি কলম (১৪৯৯ টাকা)">১০০টি কলম (১৪৯৯ টাকা)</option>
+    <select name="product">
+      <option>১২টি কলম (১৭৯ টাকা)</option>
+      <option>২০টি কলম (২৯৯ টাকা)</option>
+      <option>৪০টি কলম (৫৯৯ টাকা)</option>
+      <option>১০০টি কলম (১৪৯৯ টাকা)</option>
     </select><br><br>
 
-    <!-- Payment Method -->
-    <select id="payment" onchange="togglePayment()">
+    <select name="payment" onchange="togglePayment()" id="payment">
       <option value="COD">Cash on Delivery</option>
       <option value="bKash">bKash</option>
-      
     </select><br><br>
 
-    <!-- Payment Instructions -->
     <div id="paymentBox" style="display:none;">
-      <p>📲 Payment Number: 01786706223(Bkash )</p>
-      <input type="text" id="trx" placeholder="Transaction ID (যদি Online Payment)">
+      <p>📲 Payment Number: 01786706223 (bKash)</p>
+      <input type="text" name="trx" placeholder="Transaction ID">
     </div>
-  
-    <button type="submit" class="btn">অর্ডার করুন</button>
+
+    <button type="submit">অর্ডার করুন</button>
 
   </form>
 </section>
@@ -73,48 +69,6 @@ function togglePayment(){
   } else {
     box.style.display = "block";
   }
-}
-
-function submitOrder(){
-
-  var data = {
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    division: document.getElementById("division").value,
-    district: document.getElementById("district").value,
-    upazila: document.getElementById("upazila").value,
-    address: document.getElementById("address").value,
-    product: document.getElementById("product").value,
-    trx: document.getElementById("trx").value,
-    payment: document.getElementById("payment").value
-  };
-
-  // 🔹 Google Sheet Save
-  fetch("https://script.google.com/macros/s/AKfycbyAIaPg9B0lJqkg6JmlFDVyzeoVnpTv9FKhz6qI5oSfm_eAVWiXQsWNLcfn_myevTck2w/exec", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-})
-.then(res => res.json())
-.then(resp => alert("Response: " + resp.result))
-.catch(err => alert("Error: " + err));
-  // 🔹 WhatsApp Message
-  var msg = "🛒 নতুন অর্ডার:%0A" +
-          "নাম: " + data.name + "%0A" +
-          "ফোন: " + data.phone + "%0A" +
-          "বিভাগ: " + data.division + "%0A" +
-          "জেলা: " + data.district + "%0A" +
-          "উপজেলা: " + data.upazila + "%0A" +
-          "ঠিকানা: " + data.address + "%0A" +
-          "Payment: " + data.payment + "%0A" +
-          "TrxID: " + data.trx + "%0A" +
-          "পণ্য: " + data.product;
-
-  window.open("https://wa.me/8801925740477?text=" + msg);
-
-  alert("✅ অর্ডার সাবমিট হয়েছে! WhatsApp-এ কনফার্ম করুন।");
 }
 </script>
 
