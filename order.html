@@ -90,10 +90,10 @@ function submitOrder(){
   };
 
   // 🔹 Google Sheet Save
-  fetch("https://script.google.com/macros/s/AKfycbwVnRJH7QhkPB2Z4ka1gHPgUX0VCqKpXbpte82jyOpLvaKpigepLIxkXqzhJ2Ute_8P/exec", {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
+  fetch("https://script.google.com/macros/s/AKfycbyhebgy7dRsEHwHB72ei-HydUR1hzRgAcWhbXcfABFmYTDwsY_B4t4OPaTHGy8LTmSlrw/exec", {
+  method: "POST",
+  body: JSON.stringify(data)
+});
 
   // 🔹 WhatsApp Message
   var msg = "🛒 নতুন অর্ডার:%0A" +
