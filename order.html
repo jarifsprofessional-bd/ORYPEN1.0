@@ -3,36 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Plantable Pen</title>
+  <title>অর্ডার করুন</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="Oryx Logo" class="logo">
-    <h1>অর্ডার Plantable Eco Pen</h1>
-  </header>
 
-  <section class="order-form">
-    <h2>Order Details</h2>
-    <form action="https://wa.me/+8801409645165" method="get" target="_blank">
-      <label>নাম:</label>
-      <input type="text" name="name" required>
+<header>
+  <h1>অর্ডার করুন</h1>
+</header>
+
+<section>
+  <h2>আপনার তথ্য দিন</h2>
+
+  <form onsubmit="submitOrder(); return false;">
+    
+    <input type="text" id="name" placeholder="নাম" required><br><br>
+    <input type="tel" id="phone" placeholder="ফোন নাম্বার" required><br><br>
+
+    <!-- Division -->
+    <select id="division" required>
+      <option value="">বিভাগ নির্বাচন করুন</option>
+      <option value="ঢাকা">ঢাকা</option>
+      <option value="চট্টগ্রাম">চট্টগ্রাম</option>
+      <option value="খুলনা">খুলনা</option>
+      <option value="রাজশাহী">রাজশাহী</option>
+      <option value="বরিশাল">বরিশাল</option>
+      <option value="সিলেট">সিলেট</option>
+      <option value="রংপুর">রংপুর</option>
+      <option value="ময়মনসিংহ">ময়মনসিংহ</option>
+    </select><br><br>
+
+    <input type="text" id="district" placeholder="জেলা" required><br><br>
+    <input type="text" id="upazila" placeholder="উপজেলা" required><br><br>
+    <input type="text" id="address" placeholder="বিস্তারিত ঠিকানা (গ্রাম/রাস্তা/বাড়ি)" required><br><br>
+
+    <!-- Product -->
+    <select id="product">
+      <option value="১২টি কলম (১৭৯ টাকা)">১২টি কলম (১৭৯ টাকা)</option>
+      <option value="২০টি কলম (২৯৯ টাকা)">২০টি কলম (২৯৯ টাকা)</option>
+      <option value="৪০টি কলম (৫৯৯ টাকা)">৪০টি কলম (৫৯৯ টাকা)</option>
+       <option value="১০০টি কলম (১৪৯৯ টাকা)">১০০টি কলম (১৪৯৯ টাকা)</option>
+    </select><br><br>
+
+    <!-- Payment Method -->
+    <select id="payment" onchange="togglePayment()">
+      <option value="COD">Cash on Delivery</option>
+      <option value="bKash">bKash</option>
       
-      <label>ঠিকানা:</label>
-      <input type="text" name="address" required>
-      
-      <label>Quantity:</label>
-      <select name="quantity">
-        <option value="5">5 কলম</option>
-        <option value="10">10 কলম</option>
-      </select>
+    </select><br><br>
 
-      <button type="submit">WhatsApp-এ অর্ডার পাঠান</button>
-    </form>
-  </section>
+    <!-- Payment Instructions -->
+    <div id="paymentBox" style="display:none;">
+      <p>📲 Payment Number: 01786706223(Bkash )</p>
+      <input type="text" id="trx" placeholder="Transaction ID (যদি Online Payment)">
+    </div>
+  
+    <button type="submit" class="btn">অর্ডার করুন</button>
 
-  <footer>
-    <p>🌱 আজ একটি কলম কিনুন, আগামীকাল একটি গাছ লাগান</p>
-  </footer>
+  </form>
+</section>
+
+<script>
+function togglePayment(){
+  var payment = document.getElementById("payment").value;
+  var box = document.getElementById("paymentBox");
+
+  if(payment === "COD"){
+    box.style.display = "none";
+  } else {
+    box.style.display = "block";
+  }
+}
+
+function submitOrder(){
+
+  var data = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    division: document.getElementById("division").value,
+    district: document.getElementById("district").value,
+    upazila: document.getElementById("upazila").value,
+    address: document.getElementById("address").value,
+    product: document.getElementById("product").value,
+    trx: document.getElementById("trx").value,
+    payment: document.getElementById("payment").value
+  };
+
+  // 🔹 Google Sheet Save
+  fetch("https://script.google.com/macros/s/AKfycbwVnRJH7QhkPB2Z4ka1gHPgUX0VCqKpXbpte82jyOpLvaKpigepLIxkXqzhJ2Ute_8P/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+
+  // 🔹 WhatsApp Message
+  var msg = "🛒 নতুন অর্ডার:%0A" +
+            "নাম: " + data.name + "%0A" +
+            "ফোন: " + data.phone + "%0A" +
+            "Payment: " + data.payment + "%0A" +
+            "TrxID: " + data.trx + "%0A" +
+            "পণ্য: " + data.product;
+
+  window.open("https://wa.me/8801925740477?text=" + msg);
+
+  alert("✅ অর্ডার সাবমিট হয়েছে! WhatsApp-এ কনফার্ম করুন।");
+}
+</script>
+
 </body>
 </html>
